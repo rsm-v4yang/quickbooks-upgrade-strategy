@@ -4,6 +4,19 @@ import textwrap
 st.set_page_config(
     page_title="Intuit QuickBooks Upgrade Strategy",
     layout="wide",
+    initial_sidebar_state="collapsed",
+    theme="light",
+)
+
+st.set_page_config(
+    page_title="Model Output Visualization & Decision Tool",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
+
+st.set_page_config(
+    page_title="Intuit QuickBooks Upgrade Strategy",
+    layout="wide",
     initial_sidebar_state="expanded",
 )
 
