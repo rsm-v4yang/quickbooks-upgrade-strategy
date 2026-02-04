@@ -81,9 +81,28 @@ st.markdown(
         line-height: 1.55;
       }
 
-      /* ================= Mobile fixes (FIXED) ================= */
+      /* ===== General "safety" (prevents wide content from breaking layout) ===== */
+      img, video, canvas, svg {
+        max-width: 100% !important;
+        height: auto !important;
+      }
+
+      iframe {
+        max-width: 100% !important;
+      }
+
+      table {
+        max-width: 100% !important;
+      }
+
+      pre, code {
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+      }
+
+      /* ================= Mobile fixes (sidebar can open/close) ================= */
       @media (max-width: 768px) {
-        /* Sidebar becomes a fixed overlay so it won't shift/cut the main content */
+        /* Sidebar as fixed overlay, BUT keep Streamlit's transform-based open/close */
         [data-testid="stSidebar"]{
           position: fixed !important;
           top: 0 !important;
@@ -97,11 +116,9 @@ st.markdown(
           backdrop-filter: none !important;
           -webkit-backdrop-filter: none !important;
 
-          transform: none !important;
+          overflow-y: auto !important;
           box-shadow: 0 8px 30px rgba(17,24,39,.12) !important;
           border-right: 1px solid rgba(17,24,39,.06) !important;
-
-          overflow-y: auto !important;
         }
 
         [data-testid="stSidebar"] *{
@@ -109,23 +126,29 @@ st.markdown(
           opacity: 1 !important;
         }
 
-        /* Prevent the app from being pushed sideways / cropped on mobile */
+        /* Prevent sideways crop / horizontal scrolling on mobile */
         html, body{
           overflow-x: hidden !important;
         }
 
         [data-testid="stAppViewContainer"]{
-          filter: none !important;
           margin-left: 0 !important;
           padding-left: 0 !important;
-          transform: none !important;
           overflow-x: hidden !important;
+          filter: none !important;
         }
 
         .block-container{
           max-width: 100% !important;
           padding-left: 1rem !important;
           padding-right: 1rem !important;
+        }
+
+        /* Mobile tables: allow horizontal scroll inside table instead of breaking page */
+        table{
+          display: block !important;
+          overflow-x: auto !important;
+          width: 100% !important;
         }
       }
     </style>
