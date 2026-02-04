@@ -100,9 +100,40 @@ st.markdown(
         word-break: break-word !important;
       }
 
-      /* ================= Mobile fixes (sidebar can open/close) ================= */
+      /* ================= Mobile fixes (FINAL: kill horizontal pan) ================= */
       @media (max-width: 768px) {
-        /* Sidebar as fixed overlay, BUT keep Streamlit's transform-based open/close */
+
+        /* Make every container behave */
+        * { box-sizing: border-box !important; }
+
+        html, body{
+          width: 100% !important;
+          max-width: 100% !important;
+          overflow-x: hidden !important;
+          overscroll-behavior-x: none !important;
+          touch-action: pan-y !important; /* key: allow vertical only */
+        }
+
+        /* Streamlit root containers (the usual overflow culprits) */
+        [data-testid="stApp"],
+        [data-testid="stAppViewContainer"],
+        [data-testid="stMain"],
+        section.main {
+          width: 100% !important;
+          max-width: 100% !important;
+          overflow-x: hidden !important;
+          overscroll-behavior-x: none !important;
+          touch-action: pan-y !important;
+        }
+
+        /* Markdown/text: force wrapping so long words/strings never widen the page */
+        [data-testid="stMarkdownContainer"],
+        [data-testid="stMarkdownContainer"] * {
+          overflow-wrap: anywhere !important;
+          word-break: break-word !important;
+        }
+
+        /* Sidebar overlay (can still open/close) */
         [data-testid="stSidebar"]{
           position: fixed !important;
           top: 0 !important;
@@ -116,6 +147,8 @@ st.markdown(
           backdrop-filter: none !important;
           -webkit-backdrop-filter: none !important;
 
+          /* IMPORTANT: do NOT force transform:none
+             Streamlit uses transform to slide open/close */
           overflow-y: auto !important;
           box-shadow: 0 8px 30px rgba(17,24,39,.12) !important;
           border-right: 1px solid rgba(17,24,39,.06) !important;
@@ -126,29 +159,24 @@ st.markdown(
           opacity: 1 !important;
         }
 
-        /* Prevent sideways crop / horizontal scrolling on mobile */
-        html, body{
-          overflow-x: hidden !important;
-        }
-
-        [data-testid="stAppViewContainer"]{
-          margin-left: 0 !important;
-          padding-left: 0 !important;
-          overflow-x: hidden !important;
-          filter: none !important;
-        }
-
+        /* Mobile layout padding */
         .block-container{
           max-width: 100% !important;
           padding-left: 1rem !important;
           padding-right: 1rem !important;
         }
 
-        /* Mobile tables: allow horizontal scroll inside table instead of breaking page */
+        /* Tables/iframes should not force page wide */
         table{
           display: block !important;
-          overflow-x: auto !important;
           width: 100% !important;
+          max-width: 100% !important;
+          overflow-x: auto !important;
+        }
+
+        iframe, img, video, canvas, svg{
+          max-width: 100% !important;
+          height: auto !important;
         }
       }
     </style>
