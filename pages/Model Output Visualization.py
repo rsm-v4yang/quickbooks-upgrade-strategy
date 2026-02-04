@@ -1,13 +1,15 @@
+import os
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Must be the first Streamlit command
-st.set_page_config(
-    page_title="Model Output Visualization",
-    page_icon="📉",
-    layout="wide",
-)
+# ✅ 建議：在 multipage 專案裡，set_page_config 只放 app.py
+# 如果你 app.py 已經有 set_page_config，這裡就不要再放，避免怪問題
+# st.set_page_config(
+#     page_title="Model Output Visualization",
+#     page_icon="📉",
+#     layout="wide",
+# )
 
 # ===========================
 # Page Title
@@ -31,7 +33,26 @@ st.divider()
 # ===========================
 @st.cache_data
 def load_nn_results():
-    df = pd.read_csv("person2_nn_mailable_ranked.csv")
+    # 專案根目錄（app.py 那層）
+    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+    # ✅ 你的 CSV 在 data 資料夾
+    csv_path = os.path.join(BASE_DIR, "data", "person2_nn_mailable_ranked.csv")
+
+    # 如果找不到，直接把資訊印出來方便你 debug（找到後可刪）
+    if not os.path.exists(csv_path):
+        st.error(f"❌ File not found: {csv_path}")
+        st.write("BASE_DIR =", BASE_DIR)
+        data_dir = os.path.join(BASE_DIR, "data")
+        st.write(
+            "Files in /data =",
+            os.listdir(data_dir)
+            if os.path.exists(data_dir)
+            else "data/ folder not found",
+        )
+        st.stop()
+
+    df = pd.read_csv(csv_path)
     df = df.sort_values("expected_profit_nn", ascending=False).reset_index(drop=True)
     df["rank"] = df.index + 1
     df["cumulative_profit"] = df["expected_profit_nn"].cumsum()
@@ -116,13 +137,3 @@ with right:
 
 st.divider()
 st.caption("Section 12 — Model Output Visualization")
-
-import os
-import streamlit as st
-import pandas as pd
-
-st.write("Current working directory:", os.getcwd())
-st.write("Files in Data folder:", os.listdir("Data"))
-
-df = pd.read_csv("Data/person2_nn_mailable_ranked.csv")
-st.write("Loaded rows:", len(df))
