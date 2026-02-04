@@ -81,14 +81,27 @@ st.markdown(
         line-height: 1.55;
       }
 
-      /* ================= Mobile fixes ================= */
+      /* ================= Mobile fixes (FIXED) ================= */
       @media (max-width: 768px) {
+        /* Sidebar becomes a fixed overlay so it won't shift/cut the main content */
         [data-testid="stSidebar"]{
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          height: 100vh !important;
+          width: 85vw !important;
+          max-width: 85vw !important;
+          z-index: 9999 !important;
+
           background: #ffffff !important;
           backdrop-filter: none !important;
           -webkit-backdrop-filter: none !important;
-          width: 85vw !important;
-          max-width: 85vw !important;
+
+          transform: none !important;
+          box-shadow: 0 8px 30px rgba(17,24,39,.12) !important;
+          border-right: 1px solid rgba(17,24,39,.06) !important;
+
+          overflow-y: auto !important;
         }
 
         [data-testid="stSidebar"] *{
@@ -96,8 +109,23 @@ st.markdown(
           opacity: 1 !important;
         }
 
+        /* Prevent the app from being pushed sideways / cropped on mobile */
+        html, body{
+          overflow-x: hidden !important;
+        }
+
         [data-testid="stAppViewContainer"]{
           filter: none !important;
+          margin-left: 0 !important;
+          padding-left: 0 !important;
+          transform: none !important;
+          overflow-x: hidden !important;
+        }
+
+        .block-container{
+          max-width: 100% !important;
+          padding-left: 1rem !important;
+          padding-right: 1rem !important;
         }
       }
     </style>
