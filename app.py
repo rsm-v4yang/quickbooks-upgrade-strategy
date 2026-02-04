@@ -6,8 +6,8 @@ import textwrap
 # ============================================================
 st.set_page_config(
     page_title="Intuit QuickBooks Upgrade Strategy",
-    layout="wide",  # ✅ desktop keeps wide
-    initial_sidebar_state="collapsed",  # ✅ mobile starts collapsed
+    layout="wide",  # desktop keeps wide
+    initial_sidebar_state="collapsed",  # mobile starts collapsed
 )
 
 # ============================================================
@@ -28,7 +28,7 @@ st.markdown(
         max-width: 100% !important;
       }
 
-      /* Force wrapping so long strings never create horizontal pan on mobile */
+      /* Force wrapping so long strings never create horizontal pan */
       [data-testid="stMarkdownContainer"],
       [data-testid="stMarkdownContainer"] *{
         overflow-wrap: anywhere !important;
@@ -91,34 +91,31 @@ PAGES = [
     ("Strategic Recommendations", "pages/Strategic Recommendations.py"),
 ]
 
-# Build Streamlit nav pages
+# ============================================================
+# Sidebar navigation (desktop-friendly)
+# ============================================================
 nav_pages = [st.Page(path, title=title) for title, path in PAGES]
-pg = st.navigation(nav_pages)  # ✅ keeps normal sidebar navigation on desktop
+pg = st.navigation(nav_pages)
 
 # ============================================================
-# Mobile-friendly top nav (does NOT replace sidebar; it just lets phone users jump)
+# Top dropdown navigation (mobile-friendly)
 # ============================================================
-# We don't try to "switch" pg (no such API). We use session_state + rerun.
 page_titles = [t for t, _ in PAGES]
 
-# initialize
 if "mobile_page" not in st.session_state:
     st.session_state.mobile_page = page_titles[0]
 
-# Show dropdown at top (works on desktop too, but mainly for mobile)
-st.markdown("### Navigate")
 choice = st.selectbox(
     "",
     page_titles,
     index=page_titles.index(st.session_state.mobile_page),
 )
 
-# If user changes dropdown, store and rerun. Then sidebar nav can follow on its own.
 if choice != st.session_state.mobile_page:
     st.session_state.mobile_page = choice
     st.rerun()
 
 # ============================================================
-# Run the app navigation
+# Run the app
 # ============================================================
 pg.run()
