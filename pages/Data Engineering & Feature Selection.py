@@ -196,6 +196,21 @@ with left:
         icon="⚙️",
     )
 
+    # --- NEW: Feature Engineering card ---
+    info_card(
+        "Feature Engineering: Creating Strategic Predictors",
+        """
+        To enhance model performance beyond raw data, we engineered several key variables that provide stronger signals to the model.<br><br>
+
+        <b>Zip Code Binning:</b> Instead of using raw ZIP codes, we grouped geographic data into bins (<code>zip_bins</code>).
+        This reduced noise from sparse ZIP-level variation and allowed the model to capture regional purchasing trends effectively.<br><br>
+
+        <b>Missingness as a Signal:</b> For categorical variables like <code>sex</code>, we created an <b>“Unknown”</b> category.
+        Treating missing values as an explicit category transforms data gaps into predictive features — the absence of information can itself be informative in direct marketing.
+        """,
+        icon="🧩",
+    )
+
 with right:
     info_card(
         "Quick Summary",
