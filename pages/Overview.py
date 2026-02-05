@@ -89,33 +89,35 @@ st.markdown(
     """).strip(),
     unsafe_allow_html=True,
 )
-# ===== Executive Summary card =====
-# ===== Executive Summary card (REVISED) =====
+# ===== Executive Summary card (SIMPLIFIED + CLEAR) =====
 st.markdown(
     """
     <div class="card">
       <h3 style="margin-top:0;">1. Executive Summary</h3>
 
       <p>
-        We built a <b>model-driven targeting strategy</b> for Intuit’s <b>Wave-2 direct mailing campaign</b>
-        to promote the QuickBooks v3.0 upgrade. Instead of mailing everyone, we score each customer’s
-        likelihood of responding and <b>mail only when the expected profit is positive</b>.
+        This project helps Intuit decide <b>who to mail</b> in the Wave-2 campaign for the QuickBooks v3.0 upgrade.
+        The key idea is simple: <b>don’t mail everyone</b>—mail only the customers who are likely enough to respond
+        so the company can <b>make money after paying mailing costs</b>.
       </p>
 
       <p>
-        Because Wave-2 is expected to have <b>~50% lower response</b> than Wave-1, we apply a conservative adjustment
-        before making decisions. We estimate profit using the course assumptions:
+        We use historical data from Wave-1 to build models that predict each customer’s probability of responding in Wave-2.
+        Since Wave-2 typically performs worse, we apply a conservative adjustment assuming Wave-2 response is about
+        <b>50% lower</b> than Wave-1.
+      </p>
+
+      <p>
+        Profit is evaluated using the case assumptions:
         <b>$60 margin per responder</b> and <b>$1.41 cost per mail</b>.
-      </p>
-
-      <p>
-        Our best-performing model (<b>Neural Network / MLP</b>) recommends mailing to the top <b>15.5%</b> of remaining non-responders.
-        When scaled to the full eligible population, this approach is projected to generate
-        <b>over $475,000</b> in incremental profit.
+        After comparing Logistic Regression and a Neural Network (MLP), the <b>Neural Network</b> produces the highest expected profit.
+        It recommends mailing to about the top <b>15.5%</b> of remaining non-responders, which is projected to generate
+        <b>over $475,000</b> in incremental profit when scaled to the full eligible population.
       </p>
 
       <div class="subtle" style="margin-top:.45rem;">
-        <b>Decision rule:</b> Mail a customer only if <b>Expected Profit = 60 × (Adjusted Response Probability) − 1.41 &gt; 0</b>.
+        <b>Decision rule:</b> Mail only if
+        <b>Expected Profit = 60 × (Adjusted Response Probability) − 1.41 &gt; 0</b>.
       </div>
     </div>
     """,
@@ -123,26 +125,28 @@ st.markdown(
 )
 
 
-# ===== Business Problem & Objective card (REVISED) =====
+# ===== Business Problem & Objective card (SIMPLIFIED + CLEAR) =====
 st.markdown(
     """
     <div class="card" style="margin-top:1.2rem;">
       <h3 style="margin-top:0;">2. Business Problem & Objective</h3>
 
       <p><b>Business Problem:</b><br/>
-        After the Wave-1 campaign, Intuit still has <b>763,334 non-responding customers</b> who may upgrade to QuickBooks v3.0.
-        Wave-2 is an opportunity to convert these customers, but mailing has a direct cost.
+        After Wave-1, Intuit still has <b>763,334 customers who did not respond</b>.
+        Wave-2 is a chance to convert some of them, but each mail piece costs money.
       </p>
 
       <p><b>Key Challenge:</b><br/>
-        Each Wave-2 mail piece costs <b>$1.41</b>, and the Wave-2 response rate is expected to be about <b>50% lower</b> than Wave-1.
-        A blanket mailing strategy would therefore include many customers with <b>negative expected returns</b>.
+        Wave-2 response is expected to be <b>about 50% lower</b> than Wave-1, while the mailing cost remains <b>$1.41 per customer</b>.
+        If Intuit mails everyone, many customers will be unlikely to respond and the campaign will waste budget on
+        <b>negative expected profit</b>.
       </p>
 
       <p><b>Objective:</b><br/>
-        Build a classification model that identifies customers to mail in Wave-2. We mail only when:
+        Build models that estimate each customer’s probability of responding in Wave-2, then use those predictions to choose
+        a target list that <b>maximizes total campaign profit</b>.
+        We mail a customer only when:
         <b>Expected Profit = 60 × (Adjusted Response Probability) − 1.41 &gt; 0</b>.
-        This ensures each mailed customer has <b>positive expected incremental profit</b>, and total campaign profit is maximized.
       </p>
     </div>
     """,
