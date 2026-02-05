@@ -239,7 +239,7 @@ exec_html = (
 
 st.markdown(exec_html, unsafe_allow_html=True)
 
-with st.expander("Implementation notes (optional)", expanded=False):
+with st.expander("Implementation notes", expanded=False):
     st.markdown(
         """
         If desired, we can include:
